@@ -1,0 +1,32 @@
+{
+  "canara": {
+    "display_name": "canara",
+    "patterns": ["CANARA BANK", "CANARA", "CNRB", "SYNDICATE"],
+    "parser": "canara"
+  },
+  "hdfc": {
+    "display_name": "hdfc",
+    "patterns": ["HDFC BANK", "HDFC LTD", "HDFC"],
+    "parser": "hdfc"
+  },
+  "icici": {
+    "display_name": "icici",
+    "patterns": ["ICICI BANK", "ICICI"],
+    "parser": "icici"
+  },
+  "sbi": {
+    "display_name": "sbi",
+    "patterns": ["STATE BANK OF INDIA", "SBI"],
+    "parser": "sbi"
+  },
+  "axis": {
+    "display_name": "axis",
+    "patterns": ["AXIS BANK", "AXIS"],
+    "parser": "axis"
+  },
+  "kotak": {
+    "display_name": "kotak",
+    "patterns": ["KOTAK MAHINDRA", "KOTAK"],
+    "parser": "kotak"
+  }
+}
