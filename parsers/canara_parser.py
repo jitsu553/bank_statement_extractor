@@ -99,7 +99,10 @@ class CanaraParser(BaseParser):
                     closing_balance_row = self._empty_row()
                     closing_balance_row["Particulars"] = "Closing Balance"
                     closing_balance_row["Balance"] = balance
-                    prev_balance = self._parse_decimal(balance)
+                    # NOTE: do not seed prev_balance here. Pass 1 runs to completion
+                    # before Pass 2 classifies transactions, so setting prev_balance
+                    # from the closing balance would corrupt the running balance used
+                    # to classify the first key line on the page.
                 else:
                     warnings.append("Could not parse closing balance line.")
                 continue
