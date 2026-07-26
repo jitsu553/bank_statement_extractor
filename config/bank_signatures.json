@@ -18,5 +18,10 @@
     "display_name": "axis",
     "patterns": ["AXIS BANK", "AXIS"],
     "parser": "axis"
+  },
+  "bob": {
+    "display_name": "bob",
+    "patterns": ["BANK OF BARODA", "BARB0"],
+    "parser": "bob"
   }
 }
