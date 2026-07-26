@@ -33,5 +33,10 @@
     "display_name": "svc_co",
     "patterns": ["SVC CO-OPERATIVE BANK", "SVCB0"],
     "parser": "svc_co"
+  },
+  "standard_chartered": {
+    "display_name": "standard_chartered",
+    "patterns": ["STANDARD CHARTERED", "SCBL0"],
+    "parser": "standard_chartered"
   }
 }

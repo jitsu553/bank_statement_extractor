@@ -53,7 +53,9 @@ def _find_table_header_offset(text: str) -> Optional[int]:
         normalized = re.sub(r"[^a-z\s]", " ", line.lower())
         normalized = re.sub(r"\s+", " ", normalized).strip()
         has_date = "date" in normalized
-        has_description = "narration" in normalized or "particulars" in normalized
+        has_description = (
+            "narration" in normalized or "particulars" in normalized or "description" in normalized
+        )
         has_balance = "balance" in normalized
         if has_date and has_description and has_balance:
             return offset
