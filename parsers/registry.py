@@ -7,6 +7,7 @@ from typing import Dict
 from parsers.axis_parser import AxisParser
 from parsers.base_parser import BaseParser
 from parsers.bob_parser import BobParser
+from parsers.boi_parser import BoiParser
 from parsers.canara_parser import CanaraParser
 from parsers.generic_parser import GenericParser
 from parsers.hdfc_parser import HdfcParser
@@ -20,6 +21,7 @@ def get_registry() -> Dict[str, BaseParser]:
     hdfc = HdfcParser(key="hdfc", display_name="hdfc")
     axis = AxisParser(key="axis", display_name="axis")
     bob = BobParser(key="bob", display_name="bob")
+    boi = BoiParser(key="boi", display_name="boi")
     return {
         generic.key: generic,
         canara.key: canara,
@@ -27,6 +29,7 @@ def get_registry() -> Dict[str, BaseParser]:
         hdfc.key: hdfc,
         axis.key: axis,
         bob.key: bob,
+        boi.key: boi,
     }
 
 
@@ -52,5 +55,8 @@ def get_parser(parser_key: str) -> BaseParser:
 
     if normalized == "bob":
         return BobParser(key="bob", display_name="bob")
+
+    if normalized == "boi":
+        return BoiParser(key="boi", display_name="boi")
 
     return GenericParser(key=normalized, display_name=normalized)

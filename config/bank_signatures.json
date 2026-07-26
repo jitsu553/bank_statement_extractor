@@ -23,5 +23,10 @@
     "display_name": "bob",
     "patterns": ["BANK OF BARODA", "BARB0"],
     "parser": "bob"
+  },
+  "boi": {
+    "display_name": "boi",
+    "patterns": ["BANK OF INDIA", "BKID0"],
+    "parser": "boi"
   }
 }
