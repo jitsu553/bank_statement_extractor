@@ -28,5 +28,10 @@
     "display_name": "boi",
     "patterns": ["BANK OF INDIA", "BKID0"],
     "parser": "boi"
+  },
+  "svc_co": {
+    "display_name": "svc_co",
+    "patterns": ["SVC CO-OPERATIVE BANK", "SVCB0"],
+    "parser": "svc_co"
   }
 }

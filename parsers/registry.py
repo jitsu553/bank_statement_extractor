@@ -12,6 +12,7 @@ from parsers.canara_parser import CanaraParser
 from parsers.generic_parser import GenericParser
 from parsers.hdfc_parser import HdfcParser
 from parsers.icici_parser import IciciParser
+from parsers.svc_co_parser import SvcCoParser
 
 
 def get_registry() -> Dict[str, BaseParser]:
@@ -22,6 +23,7 @@ def get_registry() -> Dict[str, BaseParser]:
     axis = AxisParser(key="axis", display_name="axis")
     bob = BobParser(key="bob", display_name="bob")
     boi = BoiParser(key="boi", display_name="boi")
+    svc_co = SvcCoParser(key="svc_co", display_name="svc_co")
     return {
         generic.key: generic,
         canara.key: canara,
@@ -30,6 +32,7 @@ def get_registry() -> Dict[str, BaseParser]:
         axis.key: axis,
         bob.key: bob,
         boi.key: boi,
+        svc_co.key: svc_co,
     }
 
 
@@ -58,5 +61,8 @@ def get_parser(parser_key: str) -> BaseParser:
 
     if normalized == "boi":
         return BoiParser(key="boi", display_name="boi")
+
+    if normalized == "svc_co":
+        return SvcCoParser(key="svc_co", display_name="svc_co")
 
     return GenericParser(key=normalized, display_name=normalized)
