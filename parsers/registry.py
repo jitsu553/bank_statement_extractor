@@ -15,6 +15,7 @@ from parsers.hdfc_parser import HdfcParser
 from parsers.icici_parser import IciciParser
 from parsers.standard_chartered_parser import StandardCharteredParser
 from parsers.svc_co_parser import SvcCoParser
+from parsers.unity_small_finance_parser import UnitySmallFinanceParser
 
 
 def get_registry() -> Dict[str, BaseParser]:
@@ -28,6 +29,7 @@ def get_registry() -> Dict[str, BaseParser]:
     svc_co = SvcCoParser(key="svc_co", display_name="svc_co")
     standard_chartered = StandardCharteredParser(key="standard_chartered", display_name="standard_chartered")
     deutsche = DeutscheParser(key="deutsche", display_name="deutsche")
+    unity_small_finance = UnitySmallFinanceParser(key="unity_small_finance", display_name="unity_small_finance")
     return {
         generic.key: generic,
         canara.key: canara,
@@ -39,6 +41,7 @@ def get_registry() -> Dict[str, BaseParser]:
         svc_co.key: svc_co,
         standard_chartered.key: standard_chartered,
         deutsche.key: deutsche,
+        unity_small_finance.key: unity_small_finance,
     }
 
 
@@ -76,5 +79,8 @@ def get_parser(parser_key: str) -> BaseParser:
 
     if normalized == "deutsche":
         return DeutscheParser(key="deutsche", display_name="deutsche")
+
+    if normalized == "unity_small_finance":
+        return UnitySmallFinanceParser(key="unity_small_finance", display_name="unity_small_finance")
 
     return GenericParser(key=normalized, display_name=normalized)

@@ -43,5 +43,10 @@
     "display_name": "deutsche",
     "patterns": ["DEUTSCHE BANK", "DEUT0"],
     "parser": "deutsche"
+  },
+  "unity_small_finance": {
+    "display_name": "unity_small_finance",
+    "patterns": ["UNITY SMALL FINANCE BANK", "UNBA0"],
+    "parser": "unity_small_finance"
   }
 }
