@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict
 
+from parsers.axis_parser import AxisParser
 from parsers.base_parser import BaseParser
 from parsers.canara_parser import CanaraParser
 from parsers.generic_parser import GenericParser
@@ -16,11 +17,13 @@ def get_registry() -> Dict[str, BaseParser]:
     canara = CanaraParser(key="canara", display_name="canara")
     icici = IciciParser(key="icici", display_name="icici")
     hdfc = HdfcParser(key="hdfc", display_name="hdfc")
+    axis = AxisParser(key="axis", display_name="axis")
     return {
         generic.key: generic,
         canara.key: canara,
         icici.key: icici,
         hdfc.key: hdfc,
+        axis.key: axis,
     }
 
 
@@ -40,5 +43,8 @@ def get_parser(parser_key: str) -> BaseParser:
 
     if normalized == "hdfc":
         return HdfcParser(key="hdfc", display_name="hdfc")
+
+    if normalized == "axis":
+        return AxisParser(key="axis", display_name="axis")
 
     return GenericParser(key=normalized, display_name=normalized)

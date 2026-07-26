@@ -87,9 +87,16 @@ class App:
 
         self.pdf_path_var.set(path)
 
-        if not self.output_path_var.get().strip():
-            suggested = os.path.splitext(path)[0] + ".xlsx"
-            self.output_path_var.set(suggested)
+        # A new PDF invalidates everything derived from the previous one:
+        # the suggested output path, the detected/selected bank, and any
+        # leftover status/progress text from a prior conversion.
+        suggested = os.path.splitext(path)[0] + ".xlsx"
+        self.output_path_var.set(suggested)
+        self.detected_bank_var.set("Not detected")
+        if self.bank_options:
+            self.selected_bank_var.set(self.bank_options[0])
+        self.status_var.set("Ready")
+        self.progress_var.set("")
 
         self.detect_bank()
 

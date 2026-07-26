@@ -13,5 +13,10 @@
     "display_name": "icici",
     "patterns": ["ICICI BANK", "ICICI"],
     "parser": "icici"
+  },
+  "axis": {
+    "display_name": "axis",
+    "patterns": ["AXIS BANK", "AXIS"],
+    "parser": "axis"
   }
 }
