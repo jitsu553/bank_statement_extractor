@@ -13,20 +13,5 @@
     "display_name": "icici",
     "patterns": ["ICICI BANK", "ICICI"],
     "parser": "icici"
-  },
-  "sbi": {
-    "display_name": "sbi",
-    "patterns": ["STATE BANK OF INDIA", "SBI"],
-    "parser": "sbi"
-  },
-  "axis": {
-    "display_name": "axis",
-    "patterns": ["AXIS BANK", "AXIS"],
-    "parser": "axis"
-  },
-  "kotak": {
-    "display_name": "kotak",
-    "patterns": ["KOTAK MAHINDRA", "KOTAK"],
-    "parser": "kotak"
   }
 }

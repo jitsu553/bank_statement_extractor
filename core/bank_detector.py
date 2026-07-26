@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from core.models import DetectionResult
 from core.pdf_loader import extract_first_pages_text
@@ -37,8 +38,34 @@ def _load_signatures(config_path: str = "config/bank_signatures.json") -> List[B
     return signatures
 
 
+def _find_table_header_offset(text: str) -> Optional[int]:
+    """Return the character offset of the transaction table's column-header
+    row (e.g. "Date Narration ... Balance"), or None if not found.
+
+    Transaction narrations routinely mention *other* banks by name (UPI/NEFT
+    counterparties, e.g. "@OKICICI" or "HDFC BANK LTD"), which can outscore
+    the statement's own bank in a naive full-text signature scan. Restricting
+    detection to the letterhead/account-info text that precedes the table
+    avoids that cross-contamination.
+    """
+    offset = 0
+    for line in text.splitlines():
+        normalized = re.sub(r"[^a-z\s]", " ", line.lower())
+        normalized = re.sub(r"\s+", " ", normalized).strip()
+        has_date = "date" in normalized
+        has_description = "narration" in normalized or "particulars" in normalized
+        has_balance = "balance" in normalized
+        if has_date and has_description and has_balance:
+            return offset
+        offset += len(line) + 1
+    return None
+
+
 def detect_bank(pdf_path: str) -> DetectionResult:
-    text = extract_first_pages_text(pdf_path, max_pages=2).upper()
+    full_text = extract_first_pages_text(pdf_path, max_pages=2)
+    header_offset = _find_table_header_offset(full_text)
+    scoped_text = full_text[:header_offset] if header_offset is not None else full_text
+    text = scoped_text.upper()
     signatures = _load_signatures()
 
     best_match: DetectionResult | None = None

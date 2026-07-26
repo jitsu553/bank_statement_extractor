@@ -58,6 +58,15 @@ _TOTAL_LINE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# The known values ICICI prints in the MODE** column (confirmed via the
+# source PDF's word x-positions). Regular UPI/NEFT/MMT/BIL/... entries leave
+# this column blank -- the mode is implied by the Particulars prefix instead.
+# Some rows (e.g. ATM withdrawals) carry the mode value immediately followed
+# by more Particulars text on the same key line, e.g.:
+#   "30-05-2025 OTHER ATMS WDL/515019314779/MUMBN151/Mumbai /30-05- 10,000.00 21,571.27"
+# so we match these as a PREFIX of the "mid" text, not just an exact match.
+_MODE_VALUES = ("MOBILE BANKING", "NET BANKING", "OTHER ATMS", "CMS TRANSACTION")
+
 
 class IciciParser(BaseParser):
     key = "icici"
@@ -68,7 +77,7 @@ class IciciParser(BaseParser):
         self.display_name = display_name
 
     def parse(self, pages: Iterable[PageExtraction]) -> ParseResult:
-        headers = ["Date", "Particulars", "Deposits", "Withdrawals", "Balance"]
+        headers = ["Date", "Mode", "Particulars", "Deposits", "Withdrawals", "Balance"]
         rows: List[Dict[str, str]] = []
         warnings: List[str] = []
 
@@ -137,13 +146,15 @@ class IciciParser(BaseParser):
                 num1 = key_match.group(3)
                 num2 = key_match.group(4)
 
-                particulars = " ".join(buffer + ([mid] if mid else [])).strip()
+                mode, mid_remainder = self._split_mode(mid)
+                particulars = " ".join(buffer + ([mid_remainder] if mid_remainder else [])).strip()
                 buffer = []
 
                 if num2 is None:
                     # Opening / brought-forward row: only a balance, no amount.
                     row = {
                         "Date": date,
+                        "Mode": mode,
                         "Particulars": particulars,
                         "Deposits": "",
                         "Withdrawals": "",
@@ -159,6 +170,7 @@ class IciciParser(BaseParser):
 
                 row = {
                     "Date": date,
+                    "Mode": mode,
                     "Particulars": particulars,
                     "Deposits": deposit,
                     "Withdrawals": withdrawal,
@@ -178,6 +190,21 @@ class IciciParser(BaseParser):
                 buffer.append(line)
 
         return rows, prev_balance, warnings
+
+    @staticmethod
+    def _split_mode(mid: str) -> Tuple[str, str]:
+        """Split "mid" text into (mode, remaining particulars fragment).
+
+        Returns ("", mid) unchanged when mid does not start with a known
+        Mode value.
+        """
+        mid_upper = mid.upper()
+        for candidate in _MODE_VALUES:
+            if mid_upper == candidate:
+                return mid, ""
+            if mid_upper.startswith(candidate + " "):
+                return mid[: len(candidate)], mid[len(candidate):].strip()
+        return "", mid
 
     @staticmethod
     def _classify_amount(
@@ -234,6 +261,7 @@ class IciciParser(BaseParser):
     def _empty_row() -> Dict[str, str]:
         return {
             "Date": "",
+            "Mode": "",
             "Particulars": "",
             "Deposits": "",
             "Withdrawals": "",

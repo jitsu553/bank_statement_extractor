@@ -7,6 +7,7 @@ from typing import Dict
 from parsers.base_parser import BaseParser
 from parsers.canara_parser import CanaraParser
 from parsers.generic_parser import GenericParser
+from parsers.hdfc_parser import HdfcParser
 from parsers.icici_parser import IciciParser
 
 
@@ -14,10 +15,12 @@ def get_registry() -> Dict[str, BaseParser]:
     generic = GenericParser(key="generic", display_name="generic")
     canara = CanaraParser(key="canara", display_name="canara")
     icici = IciciParser(key="icici", display_name="icici")
+    hdfc = HdfcParser(key="hdfc", display_name="hdfc")
     return {
         generic.key: generic,
         canara.key: canara,
         icici.key: icici,
+        hdfc.key: hdfc,
     }
 
 
@@ -34,5 +37,8 @@ def get_parser(parser_key: str) -> BaseParser:
 
     if normalized == "icici":
         return IciciParser(key="icici", display_name="icici")
+
+    if normalized == "hdfc":
+        return HdfcParser(key="hdfc", display_name="hdfc")
 
     return GenericParser(key=normalized, display_name=normalized)
