@@ -9,6 +9,7 @@ from parsers.base_parser import BaseParser
 from parsers.bob_parser import BobParser
 from parsers.boi_parser import BoiParser
 from parsers.canara_parser import CanaraParser
+from parsers.deutsche_parser import DeutscheParser
 from parsers.generic_parser import GenericParser
 from parsers.hdfc_parser import HdfcParser
 from parsers.icici_parser import IciciParser
@@ -26,6 +27,7 @@ def get_registry() -> Dict[str, BaseParser]:
     boi = BoiParser(key="boi", display_name="boi")
     svc_co = SvcCoParser(key="svc_co", display_name="svc_co")
     standard_chartered = StandardCharteredParser(key="standard_chartered", display_name="standard_chartered")
+    deutsche = DeutscheParser(key="deutsche", display_name="deutsche")
     return {
         generic.key: generic,
         canara.key: canara,
@@ -36,6 +38,7 @@ def get_registry() -> Dict[str, BaseParser]:
         boi.key: boi,
         svc_co.key: svc_co,
         standard_chartered.key: standard_chartered,
+        deutsche.key: deutsche,
     }
 
 
@@ -70,5 +73,8 @@ def get_parser(parser_key: str) -> BaseParser:
 
     if normalized == "standard_chartered":
         return StandardCharteredParser(key="standard_chartered", display_name="standard_chartered")
+
+    if normalized == "deutsche":
+        return DeutscheParser(key="deutsche", display_name="deutsche")
 
     return GenericParser(key=normalized, display_name=normalized)
